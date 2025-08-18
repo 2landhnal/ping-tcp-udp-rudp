@@ -1,0 +1,16 @@
+# Build stage
+FROM golang:1.24.5-alpine AS builder
+RUN apk add --no-cache make gcc g++ libc-dev
+WORKDIR /app
+COPY . .
+RUN go build -o main .
+
+# Run stage
+FROM alpine:3.21
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+WORKDIR /app
+RUN chown -R appuser:appgroup /app
+USER appuser
+COPY --from=builder /app/main .
+EXPOSE 9000 9001 9002
+CMD [ "/app/main" ]
