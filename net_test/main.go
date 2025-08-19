@@ -129,8 +129,14 @@ func main() {
 						return
 					}
 
+					// Set read timeout to avoid blocking forever if packet is lost
+					conn.SetReadDeadline(time.Now().Add(50 * time.Millisecond))
 					n, _, err := conn.ReadFromUDP(buf)
 					if err != nil {
+						if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
+							fmt.Printf("timeout waiting for response to message %d, skipping...\n", i+1)
+							continue // Skip this message and continue to next one
+						}
 						fmt.Println("read error:", err)
 						return
 					}
