@@ -10,3 +10,4 @@
 ![alt text](image.png)
 
 # Server host on GCP VM result
+![alt text](image-1.png)

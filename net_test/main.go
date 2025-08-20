@@ -134,7 +134,7 @@ func main() {
 					n, _, err := conn.ReadFromUDP(buf)
 					if err != nil {
 						if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
-							fmt.Printf("timeout waiting for response to message %d, skipping...\n", i+1)
+							// fmt.Printf("timeout waiting for response to message %d, skipping...\n", i+1)
 							continue // Skip this message and continue to next one
 						}
 						fmt.Println("read error:", err)
